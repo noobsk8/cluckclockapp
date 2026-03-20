@@ -508,6 +508,15 @@
       .hero-static-row { gap: 0.6rem; margin-top: 1.2rem; }
       .hero-static-row img { width: min(120px, 30vw); }
       .hero-clock { animation-duration: 0.12s; }
+
+      /* Keep hero worms near chickens, not over text */
+      header .worm-cluster.worm-gold { top: auto !important; bottom: 14% !important; left: -8% !important; }
+      header .worm-cluster.worm-pink { top: auto !important; bottom: 22% !important; right: -10% !important; }
+      header .worm-cluster.worm-black { top: auto !important; bottom: 6% !important; right: 26% !important; }
+
+      header .worm-cluster.worm-gold img { width: 170px; }
+      header .worm-cluster.worm-pink img { width: 145px; }
+      header .worm-cluster.worm-black img { width: 130px; }
     }
   </style>
 </head>
