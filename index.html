@@ -52,6 +52,7 @@
 
     /* Hero */
     header {
+      position: relative;
       min-height: 85vh;
       display: flex;
       flex-direction: column;
@@ -59,6 +60,7 @@
       padding: 3rem 0 4rem;
       text-align: center;
       background: linear-gradient(180deg, var(--bg) 0%, rgba(18, 18, 18, 0.97) 100%);
+      overflow: hidden;
     }
 
     .logo {
@@ -133,8 +135,57 @@
       padding: 0.5rem;
     }
 
+    .hero-static-row {
+      margin: 1.6rem auto 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      width: min(520px, 92vw);
+    }
+
+    .hero-static-row img {
+      width: min(150px, 28vw);
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.45));
+    }
+
+    .hero-base {
+      transform-origin: 50% 75%;
+      animation: hero-base-bobble 3.2s ease-in-out infinite;
+    }
+
+    .hero-dead { animation: none; }
+
+    .hero-clock {
+      font-size: clamp(2.3rem, 7vw, 4rem);
+      line-height: 1;
+      filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.35));
+      user-select: none;
+      transform-origin: 50% 50%;
+      animation: hero-clock-alarm 0.14s linear infinite;
+    }
+
+    @keyframes hero-base-bobble {
+      0%, 100% { transform: translateY(0) scaleX(1) scaleY(1); }
+      20% { transform: translateY(-6px) scaleX(1.04) scaleY(0.96); }
+      45% { transform: translateY(1px) scaleX(0.97) scaleY(1.03); }
+      65% { transform: translateY(-4px) scaleX(1.03) scaleY(0.97); }
+      82% { transform: translateY(0) scaleX(0.99) scaleY(1.01); }
+    }
+
+    @keyframes hero-clock-alarm {
+      0% { transform: rotate(-9deg) scale(1); }
+      25% { transform: rotate(9deg) scale(1.03); }
+      50% { transform: rotate(-8deg) scale(0.99); }
+      75% { transform: rotate(8deg) scale(1.02); }
+      100% { transform: rotate(-9deg) scale(1); }
+    }
+
     /* Sections */
     section {
+      position: relative;
       padding: 3.5rem 0;
       border-top: 1px solid var(--border);
     }
@@ -162,6 +213,54 @@
     p:last-child { margin-bottom: 0; }
 
     .section-intro { margin-bottom: 1.5rem; color: var(--text-muted); max-width: 60ch; }
+
+    .worm-cluster {
+      position: absolute;
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      z-index: 0;
+      --spawn-delay: 1.8s;
+      transition: opacity 0.25s ease;
+    }
+
+    .worm-cluster img {
+      width: 360px;
+      height: auto;
+      display: block;
+      filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.25));
+      transform-origin: 50% 100%;
+      transform: translateY(42%) scaleY(0.18) rotate(-5deg);
+      opacity: 0;
+    }
+
+    .worm-cluster.is-active {
+      opacity: 0.88;
+      visibility: visible;
+    }
+
+    .worm-cluster.is-active img {
+      animation:
+        worm-emerge 1s ease-out var(--spawn-delay) both,
+        worm-bob 4.2s ease-in-out calc(var(--spawn-delay) + 1s) infinite;
+    }
+
+    .worm-cluster.worm-gold { --spawn-delay: 2.4s; }
+    .worm-cluster.worm-pink { --spawn-delay: 3.1s; }
+    .worm-cluster.worm-black { --spawn-delay: 3.8s; }
+    .worm-cluster.worm-gold img { width: 400px; }
+    .worm-cluster.worm-black img { width: 320px; opacity: 0.9; }
+
+    @keyframes worm-bob {
+      0%, 100% { transform: translateY(0px) rotate(-2deg); }
+      50% { transform: translateY(-8px) rotate(3deg); }
+    }
+
+    @keyframes worm-emerge {
+      0% { transform: translateY(42%) scaleY(0.18) rotate(-5deg); opacity: 0; }
+      55% { transform: translateY(-6%) scaleY(1.06) rotate(2deg); opacity: 1; }
+      100% { transform: translateY(0) scaleY(1) rotate(0deg); opacity: 1; }
+    }
 
     /* Problem - two cards */
     .problem-cards {
@@ -208,6 +307,13 @@
 
     .card h3 { color: var(--worm); }
 
+    .solution .cards,
+    .stakes .wrap,
+    .rewards .wrap {
+      position: relative;
+      z-index: 1;
+    }
+
     /* Chicken Farm grid */
     .chicken-grid {
       display: grid;
@@ -242,6 +348,12 @@
     .stakes-list { margin: 0; padding-left: 1.25rem; color: var(--text-muted); font-size: 0.9375rem; }
     .stakes-list li { margin-bottom: 0.5rem; }
     .stakes-list .danger-text { color: var(--danger); }
+    .graveyard-art {
+      margin-top: 1rem;
+      width: 110px;
+      opacity: 0.95;
+      filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.35));
+    }
 
     /* Rewards - 3-Day Egg */
     .egg-block {
@@ -377,7 +489,6 @@
       display: block;
       width: 100%;
       height: auto;
-      vertical-align: middle;
     }
     .video-placeholder {
       aspect-ratio: 16 / 9;
@@ -389,10 +500,28 @@
       padding: 2rem;
       text-align: center;
     }
+
+    @media (max-width: 720px) {
+      .worm-cluster img { width: 280px; }
+      .worm-cluster.worm-gold img { width: 320px; }
+      .worm-cluster.worm-black img { width: 240px; }
+      .hero-static-row { gap: 0.6rem; margin-top: 1.2rem; }
+      .hero-static-row img { width: min(120px, 30vw); }
+      .hero-clock { animation-duration: 0.12s; }
+    }
   </style>
 </head>
 <body>
   <header>
+    <div class="worm-cluster worm-gold" style="top: 12%; left: 7%;">
+      <img src="Goldworm.png" alt="" aria-hidden="true">
+    </div>
+    <div class="worm-cluster worm-pink" style="top: 22%; right: 9%;">
+      <img src="Pinkworm.png" alt="" aria-hidden="true">
+    </div>
+    <div class="worm-cluster worm-black" style="bottom: 8%; right: 14%;">
+      <img src="Blackworm.png" alt="" aria-hidden="true">
+    </div>
     <div class="wrap">
       <p class="logo">CluckClock</p>
       <h1>Wake Up or the Chicken Dies.</h1>
@@ -400,6 +529,11 @@
       <div class="hero-cta-row">
         <a class="cta" href="[APP_STORE_LINK]">Download on the App Store →</a>
         <div class="qr-placeholder" aria-hidden="true">QR code<br>for App Store</div>
+      </div>
+      <div class="hero-static-row" aria-hidden="true">
+        <img class="hero-base" src="Base.png" alt="">
+        <span class="hero-clock">⏰</span>
+        <img class="hero-dead" src="Dead.png" alt="">
       </div>
     </div>
   </header>
@@ -432,7 +566,13 @@
     </div>
   </section>
 
-  <section id="solution" aria-labelledby="solution-heading">
+  <section id="solution" class="solution" aria-labelledby="solution-heading">
+    <div class="worm-cluster worm-gold" style="top: 16%; right: 7%;">
+      <img src="Goldworm.png" alt="" aria-hidden="true">
+    </div>
+    <div class="worm-cluster worm-pink" style="bottom: 12%; left: 10%;">
+      <img src="Pinkworm.png" alt="" aria-hidden="true">
+    </div>
     <div class="wrap">
       <h2 id="solution-heading">The Worm Mini-Game That Actually Wakes You</h2>
       <p class="section-intro">A short, focused mission that forces your eyes and hands to engage—without burning you out before you’ve had coffee.</p>
@@ -487,7 +627,10 @@
     </div>
   </section>
 
-  <section id="stakes" aria-labelledby="stakes-heading">
+  <section id="stakes" class="stakes" aria-labelledby="stakes-heading">
+    <div class="worm-cluster worm-black" style="top: 18%; right: 8%;">
+      <img src="Blackworm.png" alt="" aria-hidden="true">
+    </div>
     <div class="wrap">
       <h2 id="stakes-heading">Permanent Stakes & The Graveyard</h2>
       <p class="section-intro">When your chicken dies, it stays dead. That’s the point.</p>
@@ -495,10 +638,14 @@
         <li><strong class="danger-text">Permanent death</strong> — Dead chickens don’t come back. You start a new chicken with a new personality and name.</li>
         <li><strong>The Graveyard</strong> — A visual record of every chicken you’ve lost (and how long they lived). A feature no other alarm app offers: your wake-up history, honest and permanent.</li>
       </ul>
+      <img class="graveyard-art" src="Dead.png" alt="Dead chicken icon">
     </div>
   </section>
 
-  <section id="rewards" aria-labelledby="rewards-heading">
+  <section id="rewards" class="rewards" aria-labelledby="rewards-heading">
+    <div class="worm-cluster worm-gold" style="top: 22%; left: 7%;">
+      <img src="Goldworm.png" alt="" aria-hidden="true">
+    </div>
     <div class="wrap">
       <h2 id="rewards-heading">Consistency Rewards: The 3-Day Egg</h2>
       <p class="section-intro">Stay consistent; get rewarded. A healthy chicken lays an egg every 3 days.</p>
@@ -575,12 +722,37 @@
     <div class="wrap">
       <a class="cta" href="[APP_STORE_LINK]">Download on the App Store →</a>
       <p class="footer-meta">
-        <a href="mailto:support@cluckclock.app">Support</a>
+        <a href="/privacy">Privacy Policy</a>
         <span aria-hidden="true"> · </span>
-        <a href="/privacy">Privacy policy</a>
+        <a href="/terms">Terms of Service</a>
+        <span aria-hidden="true"> · </span>
+        <a href="/contact">Contact Support</a>
       </p>
       <p class="tagline">CluckClock — Wake up or the chicken dies.</p>
     </div>
   </footer>
+  <script>
+    (function () {
+      var worms = document.querySelectorAll('.worm-cluster');
+      if (!worms.length || !('IntersectionObserver' in window)) return;
+
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-active');
+          } else {
+            entry.target.classList.remove('is-active');
+          }
+        });
+      }, {
+        threshold: 0.15,
+        rootMargin: '-8% 0px -8% 0px'
+      });
+
+      worms.forEach(function (worm) {
+        observer.observe(worm);
+      });
+    })();
+  </script>
 </body>
 </html>
