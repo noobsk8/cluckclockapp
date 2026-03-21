@@ -63,6 +63,11 @@
       overflow: hidden;
     }
 
+    header .wrap {
+      position: relative;
+      z-index: 2;
+    }
+
     .logo {
       font-family: var(--font-head);
       font-size: 1.35rem;
@@ -118,21 +123,6 @@
     .cta:hover {
       transform: translateY(-2px);
       box-shadow: 0 8px 28px rgba(255, 215, 0, 0.4);
-    }
-
-    .qr-placeholder {
-      width: 120px;
-      height: 120px;
-      background: var(--surface-elevated);
-      border: 2px dashed var(--border);
-      border-radius: var(--radius);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-muted);
-      font-size: 0.75rem;
-      text-align: center;
-      padding: 0.5rem;
     }
 
     .hero-static-row {
@@ -219,7 +209,7 @@
       pointer-events: none;
       opacity: 0;
       visibility: hidden;
-      z-index: 0;
+      z-index: 1;
       --spawn-delay: 1.8s;
       transition: opacity 0.25s ease;
     }
@@ -510,9 +500,9 @@
       .hero-clock { animation-duration: 0.12s; }
 
       /* Keep hero worms near chickens, not over text */
-      header .worm-cluster.worm-gold { top: auto !important; bottom: 14% !important; left: -8% !important; }
-      header .worm-cluster.worm-pink { top: auto !important; bottom: 22% !important; right: -10% !important; }
-      header .worm-cluster.worm-black { top: auto !important; bottom: 6% !important; right: 26% !important; }
+      header .worm-cluster.worm-gold { top: auto !important; bottom: 5% !important; left: -12% !important; }
+      header .worm-cluster.worm-pink { top: auto !important; bottom: 11% !important; right: -14% !important; }
+      header .worm-cluster.worm-black { top: auto !important; bottom: 2% !important; right: 24% !important; }
 
       header .worm-cluster.worm-gold img { width: 170px; }
       header .worm-cluster.worm-pink img { width: 145px; }
@@ -537,7 +527,6 @@
       <p class="hero-sub">The most emotionally motivating loud alarm clock for heavy sleepers and ADHD brains.</p>
       <div class="hero-cta-row">
         <a class="cta" href="[APP_STORE_LINK]">Download on the App Store →</a>
-        <div class="qr-placeholder" aria-hidden="true">QR code<br>for App Store</div>
       </div>
       <div class="hero-static-row" aria-hidden="true">
         <img class="hero-base" src="Base.png" alt="">
