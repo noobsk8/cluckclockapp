@@ -14,17 +14,19 @@
   <link href="https://fonts.googleapis.com/css2?family=Chewy&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #23140f;
-      --bg-deep: #120906;
-      --surface: #2f1d16;
-      --surface-2: #3a241a;
-      --line: rgba(112, 64, 36, 0.9);
-      --text: #fff8e6;
-      --muted: #f6d9ab;
-      --yellow: #ffcb3c;
-      --orange: #ff8c2f;
-      --orange-deep: #d55a1a;
-      --red: #b63b24;
+      --bg: #ffbf18;
+      --bg-deep: #f07c16;
+      --surface: #2a160d;
+      --surface-2: #3a2112;
+      --line: rgba(120, 53, 18, 0.72);
+      --text: #24120b;
+      --muted: rgba(58, 27, 13, 0.9);
+      --yellow: #ffd84e;
+      --orange: #ff9d1c;
+      --orange-deep: #ff7a11;
+      --red: #8a2c12;
+      --ink: #120d0a;
+      --paper: #fff4dd;
       --shadow: 0 18px 50px rgba(0, 0, 0, 0.32);
       --radius: 24px;
       --radius-sm: 18px;
@@ -40,9 +42,10 @@
       font-family: var(--font-body);
       color: var(--text);
       background:
-        radial-gradient(circle at top left, rgba(255, 203, 60, 0.2), transparent 28%),
-        radial-gradient(circle at top right, rgba(255, 140, 47, 0.18), transparent 30%),
-        linear-gradient(180deg, #4f2b15 0%, var(--bg) 28%, var(--bg-deep) 100%);
+        radial-gradient(circle at 12% 14%, rgba(255, 238, 144, 0.34), transparent 22%),
+        radial-gradient(circle at 85% 12%, rgba(255, 181, 49, 0.28), transparent 24%),
+        radial-gradient(circle at 50% 26%, rgba(255, 151, 28, 0.16), transparent 32%),
+        linear-gradient(180deg, #ffd11f 0%, #ffb119 36%, #f58b16 72%, #ea7015 100%);
       -webkit-font-smoothing: antialiased;
     }
 
@@ -70,7 +73,8 @@
       text-decoration: none;
       font-weight: 800;
       letter-spacing: 0.02em;
-      color: var(--yellow);
+      color: #7f3115;
+      text-shadow: 1px 1px 0 rgba(255, 246, 220, 0.45);
     }
 
     .brand img {
@@ -124,9 +128,9 @@
       display: inline-block;
       padding: 0.45rem 0.8rem;
       border-radius: 999px;
-      background: rgba(255, 203, 60, 0.14);
-      border: 1px solid rgba(255, 203, 60, 0.35);
-      color: var(--yellow);
+      background: rgba(255, 244, 219, 0.18);
+      border: 1px solid rgba(151, 63, 16, 0.24);
+      color: #7a2f14;
       font-size: 0.9rem;
       font-weight: 800;
       text-transform: uppercase;
@@ -144,8 +148,10 @@
     h1 {
       margin-top: 1rem;
       font-size: clamp(3rem, 7vw, 5.9rem);
-      color: var(--yellow);
-      text-shadow: 4px 4px 0 var(--red);
+      color: #fff7ea;
+      text-shadow:
+        3px 3px 0 var(--red),
+        5px 5px 0 rgba(63, 18, 8, 0.92);
     }
 
     .hero-copy p,
@@ -182,22 +188,22 @@
       border-radius: 16px;
       text-decoration: none;
       font-weight: 800;
-      background: linear-gradient(180deg, #ffd451 0%, #f3a923 100%);
-      color: #2a160d;
-      box-shadow: 0 14px 30px rgba(243, 169, 35, 0.3);
+      background: linear-gradient(180deg, #fff8f0 0%, #f4ece1 100%);
+      color: var(--ink);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.2);
       transition: transform 0.18s ease, box-shadow 0.18s ease;
     }
 
     .cta:hover,
     .cta:focus-visible {
       transform: translateY(-2px);
-      box-shadow: 0 18px 38px rgba(243, 169, 35, 0.38);
+      box-shadow: 0 18px 38px rgba(0, 0, 0, 0.28);
     }
 
     .cta.secondary {
-      background: rgba(255, 248, 230, 0.08);
-      color: var(--text);
-      border: 1px solid rgba(255, 248, 230, 0.16);
+      background: rgba(152, 80, 22, 0.18);
+      color: #fff8f0;
+      border: 1px solid rgba(255, 245, 226, 0.26);
       box-shadow: none;
     }
 
@@ -214,7 +220,7 @@
     .hero-panel {
       position: relative;
       background:
-        linear-gradient(180deg, rgba(255, 203, 60, 0.18) 0%, rgba(255, 140, 47, 0.06) 20%, rgba(29, 13, 8, 0.9) 100%),
+        linear-gradient(180deg, rgba(255, 196, 56, 0.22) 0%, rgba(255, 141, 30, 0.1) 20%, rgba(29, 13, 8, 0.92) 100%),
         var(--surface);
       border: 3px solid var(--line);
       border-radius: 34px;
@@ -239,7 +245,7 @@
 
     .alarm-label {
       font-size: 0.92rem;
-      color: var(--yellow);
+      color: #ffcf3f;
       font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.08em;
@@ -254,8 +260,8 @@
     .alarm-status {
       padding: 0.4rem 0.65rem;
       border-radius: 999px;
-      background: rgba(182, 59, 36, 0.22);
-      color: #ffb09f;
+      background: rgba(146, 60, 36, 0.52);
+      color: #ffe6dd;
       font-size: 0.82rem;
       font-weight: 800;
       text-transform: uppercase;
@@ -341,10 +347,22 @@
       box-shadow: var(--shadow);
     }
 
+    .panel .section-intro,
+    .panel h3,
+    .panel .card p,
+    .panel .proof-card p,
+    .panel .proof-kicker,
+    .footer-panel .footer-note,
+    .footer-panel .footer-links a {
+      color: #fff4dc;
+    }
+
     h2 {
       font-size: clamp(2.2rem, 5vw, 4rem);
-      color: var(--yellow);
-      text-shadow: 3px 3px 0 var(--red);
+      color: #fff7ea;
+      text-shadow:
+        2px 2px 0 var(--red),
+        4px 4px 0 rgba(63, 18, 8, 0.9);
     }
 
     .section-intro {
@@ -369,8 +387,8 @@
 
     .card,
     .proof-card {
-      background: linear-gradient(180deg, rgba(255, 248, 230, 0.04), rgba(255, 248, 230, 0.02));
-      border: 2px solid rgba(255, 248, 230, 0.08);
+      background: linear-gradient(180deg, rgba(255, 248, 230, 0.08), rgba(255, 248, 230, 0.04));
+      border: 2px solid rgba(255, 248, 230, 0.12);
       border-radius: var(--radius);
       padding: 1.15rem;
     }
@@ -382,11 +400,11 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(180deg, #ffd451 0%, #ff9c2f 100%);
-      color: #2a160d;
+      background: linear-gradient(180deg, #fff8f0 0%, #f0e7da 100%);
+      color: var(--ink);
       font-weight: 900;
       margin-bottom: 0.85rem;
-      box-shadow: 0 10px 20px rgba(243, 169, 35, 0.22);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.18);
     }
 
     h3 {
@@ -420,9 +438,14 @@
       align-items: center;
       justify-content: center;
       background:
-        radial-gradient(circle at top, rgba(255, 203, 60, 0.18), transparent 45%),
-        linear-gradient(180deg, #42261b 0%, #23140f 100%);
+        radial-gradient(circle at top, rgba(255, 193, 42, 0.2), transparent 45%),
+        linear-gradient(180deg, #4b2b14 0%, #24130c 100%);
       border-bottom: 2px solid rgba(255, 248, 230, 0.08);
+    }
+
+    .panel .step-number,
+    .panel .reason-icon {
+      color: var(--ink);
     }
 
     .proof-shot img {
@@ -465,7 +488,7 @@
 
     .footer-panel {
       background:
-        linear-gradient(180deg, rgba(255, 203, 60, 0.12), rgba(255, 140, 47, 0.06) 28%, rgba(28, 13, 9, 0.92) 100%);
+        linear-gradient(180deg, rgba(255, 197, 62, 0.16), rgba(255, 140, 37, 0.08) 28%, rgba(28, 13, 9, 0.92) 100%);
     }
 
     .footer-grid {
@@ -488,7 +511,7 @@
 
     .footer-links a:hover,
     .footer-links a:focus-visible {
-      color: var(--yellow);
+      color: #ffffff;
     }
 
     .footer-note {
