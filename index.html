@@ -3,754 +3,714 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CluckClock: Wake Up or the Chicken Dies.</title>
-  <meta name="description" content="The most emotionally motivating loud alarm clock for heavy sleepers and ADHD brains. Feed your chicken in a 4–6 second worm game or it dies. Permanent stakes. Real mornings.">
-  <meta name="keywords" content="alarm app, wake up game, ADHD alarm, heavy sleeper alarm, morning routine, chicken alarm, worm game, iOS alarm">
+  <title>CluckClock - Loud Alarm Clock</title>
+  <meta name="description" content="CluckClock is a loud alarm clock for heavy sleepers. Feed the chicken to stop the alarm, and don't let snoozing cost you your bird.">
+  <meta name="keywords" content="loud alarm clock, heavy sleeper alarm, chicken alarm, wake up game, snooze alarm, iOS alarm">
+  <link rel="canonical" href="https://cluckclock.app/">
+  <link rel="icon" type="image/png" href="mascoticon.png">
+  <link rel="apple-touch-icon" href="mascoticon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Chewy&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #121212;
-      --surface: #1a1a1a;
-      --surface-elevated: #242424;
-      --text: #f5f5f5;
-      --text-muted: #a0a0a0;
-      --sunrise: #FF7F50;
-      --worm: #FFD700;
-      --dirt: #5D4037;
-      --danger: #D32F2F;
-      --border: #2d2d2d;
-      --radius: 12px;
-      --radius-tile: 8px;
-      --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
-      --font-head: 'Fraunces', Georgia, serif;
-      --font-body: 'DM Sans', system-ui, sans-serif;
+      --bg: #23140f;
+      --bg-deep: #120906;
+      --surface: #2f1d16;
+      --surface-2: #3a241a;
+      --line: rgba(112, 64, 36, 0.9);
+      --text: #fff8e6;
+      --muted: #f6d9ab;
+      --yellow: #ffcb3c;
+      --orange: #ff8c2f;
+      --orange-deep: #d55a1a;
+      --red: #b63b24;
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.32);
+      --radius: 24px;
+      --radius-sm: 18px;
+      --font-head: "Chewy", cursive;
+      --font-body: "Nunito", system-ui, sans-serif;
     }
 
     * { box-sizing: border-box; }
-
     html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
       font-family: var(--font-body);
-      font-size: 1.0625rem;
-      line-height: 1.65;
       color: var(--text);
-      background: var(--bg);
+      background:
+        radial-gradient(circle at top left, rgba(255, 203, 60, 0.2), transparent 28%),
+        radial-gradient(circle at top right, rgba(255, 140, 47, 0.18), transparent 30%),
+        linear-gradient(180deg, #4f2b15 0%, var(--bg) 28%, var(--bg-deep) 100%);
       -webkit-font-smoothing: antialiased;
     }
 
-    .wrap {
-      max-width: 720px;
+    img { max-width: 100%; display: block; }
+    a { color: inherit; }
+
+    .wrap,
+    .wrap-wide {
+      width: min(1120px, calc(100% - 2rem));
       margin: 0 auto;
-      padding: 0 1.25rem;
+      position: relative;
+      z-index: 1;
     }
 
-    .wrap-wide { max-width: 880px; margin: 0 auto; padding: 0 1.25rem; }
+    .wrap { max-width: 960px; }
 
-    /* Hero */
-    header {
+    .topbar {
+      padding: 1rem 0 0;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      color: var(--yellow);
+    }
+
+    .brand img {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
       position: relative;
-      min-height: 85vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 3rem 0 4rem;
-      text-align: center;
-      background: linear-gradient(180deg, var(--bg) 0%, rgba(18, 18, 18, 0.97) 100%);
       overflow: hidden;
+      padding: 1rem 0 4rem;
     }
 
-    header .wrap {
-      position: relative;
-      z-index: 2;
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto;
+      border-radius: 50%;
+      filter: blur(24px);
+      pointer-events: none;
     }
 
-    .logo {
+    .hero::before {
+      width: 280px;
+      height: 280px;
+      left: -90px;
+      top: 80px;
+      background: rgba(255, 203, 60, 0.18);
+    }
+
+    .hero::after {
+      width: 320px;
+      height: 320px;
+      right: -120px;
+      top: 20px;
+      background: rgba(255, 140, 47, 0.15);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+      gap: 2rem;
+      align-items: center;
+      min-height: calc(100vh - 72px);
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 0.45rem 0.8rem;
+      border-radius: 999px;
+      background: rgba(255, 203, 60, 0.14);
+      border: 1px solid rgba(255, 203, 60, 0.35);
+      color: var(--yellow);
+      font-size: 0.9rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    h1,
+    h2 {
+      margin: 0;
       font-family: var(--font-head);
-      font-size: 1.35rem;
-      font-weight: 700;
-      color: var(--sunrise);
-      margin-bottom: 1rem;
-      letter-spacing: -0.02em;
+      line-height: 0.95;
+      letter-spacing: 0.01em;
     }
 
     h1 {
-      font-family: var(--font-head);
-      font-size: clamp(2rem, 5.5vw, 3rem);
-      font-weight: 700;
-      line-height: 1.2;
-      margin: 0 0 1rem;
-      color: var(--text);
-      letter-spacing: -0.03em;
+      margin-top: 1rem;
+      font-size: clamp(3rem, 7vw, 5.9rem);
+      color: var(--yellow);
+      text-shadow: 4px 4px 0 var(--red);
     }
 
-    .hero-sub {
-      font-size: 1.125rem;
-      color: var(--text-muted);
-      max-width: 48ch;
-      margin: 0 auto 1.75rem;
+    .hero-copy p,
+    .section-intro,
+    .card p,
+    .proof-card p,
+    .footer-note,
+    .proof-kicker,
+    .cta-note {
+      color: var(--muted);
     }
 
-    .hero-cta-row {
+    .hero-copy p {
+      font-size: 1.18rem;
+      line-height: 1.55;
+      max-width: 34rem;
+      margin: 1rem 0 0;
+    }
+
+    .hero-actions {
       display: flex;
       flex-wrap: wrap;
+      gap: 0.9rem;
+      margin-top: 1.5rem;
       align-items: center;
-      justify-content: center;
-      gap: 1.5rem;
-      margin-top: 0.5rem;
     }
 
     .cta {
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
-      padding: 0.875rem 1.5rem;
-      font-family: var(--font-body);
-      font-size: 1rem;
-      font-weight: 600;
-      color: #121212;
-      background: var(--worm);
-      border: none;
-      border-radius: var(--radius);
-      text-decoration: none;
-      box-shadow: 0 4px 20px rgba(255, 215, 0, 0.35);
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-    }
-
-    .cta:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 28px rgba(255, 215, 0, 0.4);
-    }
-
-    .hero-static-row {
-      margin: 1.6rem auto 0;
-      display: flex;
-      align-items: center;
       justify-content: center;
-      gap: 1rem;
-      width: min(520px, 92vw);
+      min-height: 56px;
+      padding: 0.9rem 1.35rem;
+      border-radius: 16px;
+      text-decoration: none;
+      font-weight: 800;
+      background: linear-gradient(180deg, #ffd451 0%, #f3a923 100%);
+      color: #2a160d;
+      box-shadow: 0 14px 30px rgba(243, 169, 35, 0.3);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
     }
 
-    .hero-static-row img {
-      width: min(150px, 28vw);
-      height: auto;
-      display: block;
-      filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.45));
+    .cta:hover,
+    .cta:focus-visible {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 38px rgba(243, 169, 35, 0.38);
     }
 
-    .hero-base {
-      transform-origin: 50% 75%;
-      animation: hero-base-bobble 3.2s ease-in-out infinite;
+    .cta.secondary {
+      background: rgba(255, 248, 230, 0.08);
+      color: var(--text);
+      border: 1px solid rgba(255, 248, 230, 0.16);
+      box-shadow: none;
     }
 
-    .hero-dead { animation: none; }
-
-    .hero-clock {
-      font-size: clamp(2.3rem, 7vw, 4rem);
-      line-height: 1;
-      filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.35));
-      user-select: none;
-      transform-origin: 50% 50%;
-      animation: hero-clock-alarm 0.14s linear infinite;
-    }
-
-    @keyframes hero-base-bobble {
-      0%, 100% { transform: translateY(0) scaleX(1) scaleY(1); }
-      20% { transform: translateY(-6px) scaleX(1.04) scaleY(0.96); }
-      45% { transform: translateY(1px) scaleX(0.97) scaleY(1.03); }
-      65% { transform: translateY(-4px) scaleX(1.03) scaleY(0.97); }
-      82% { transform: translateY(0) scaleX(0.99) scaleY(1.01); }
-    }
-
-    @keyframes hero-clock-alarm {
-      0% { transform: rotate(-9deg) scale(1); }
-      25% { transform: rotate(9deg) scale(1.03); }
-      50% { transform: rotate(-8deg) scale(0.99); }
-      75% { transform: rotate(8deg) scale(1.02); }
-      100% { transform: rotate(-9deg) scale(1); }
-    }
-
-    /* Sections */
-    section {
-      position: relative;
-      padding: 3.5rem 0;
-      border-top: 1px solid var(--border);
-    }
-
-    section:nth-child(even) { background: var(--surface); }
-
-    h2 {
-      font-family: var(--font-head);
-      font-size: 1.75rem;
+    .cta-note {
+      font-size: 0.95rem;
       font-weight: 700;
-      margin: 0 0 1.5rem;
-      color: var(--text);
-      letter-spacing: -0.02em;
     }
 
-    h3 {
-      font-family: var(--font-body);
-      font-size: 1rem;
-      font-weight: 600;
-      margin: 0 0 0.4rem;
-      color: var(--text);
-    }
-
-    p { margin: 0 0 0.75rem; color: var(--text-muted); font-size: 0.9375rem; }
-    p:last-child { margin-bottom: 0; }
-
-    .section-intro { margin-bottom: 1.5rem; color: var(--text-muted); max-width: 60ch; }
-
-    .worm-cluster {
-      position: absolute;
-      pointer-events: none;
-      opacity: 0;
-      visibility: hidden;
-      z-index: 1;
-      --spawn-delay: 1.8s;
-      transition: opacity 0.25s ease;
-    }
-
-    .worm-cluster img {
-      width: 360px;
-      height: auto;
-      display: block;
-      filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.25));
-      transform-origin: 50% 100%;
-      transform: translateY(42%) scaleY(0.18) rotate(-5deg);
-      opacity: 0;
-    }
-
-    .worm-cluster.is-active {
-      opacity: 0.88;
-      visibility: visible;
-    }
-
-    .worm-cluster.is-active img {
-      animation:
-        worm-emerge 1s ease-out var(--spawn-delay) both,
-        worm-bob 4.2s ease-in-out calc(var(--spawn-delay) + 1s) infinite;
-    }
-
-    .worm-cluster.worm-gold { --spawn-delay: 2.4s; }
-    .worm-cluster.worm-pink { --spawn-delay: 3.1s; }
-    .worm-cluster.worm-black { --spawn-delay: 3.8s; }
-    .worm-cluster.worm-gold img { width: 400px; }
-    .worm-cluster.worm-black img { width: 320px; opacity: 0.9; }
-
-    @keyframes worm-bob {
-      0%, 100% { transform: translateY(0px) rotate(-2deg); }
-      50% { transform: translateY(-8px) rotate(3deg); }
-    }
-
-    @keyframes worm-emerge {
-      0% { transform: translateY(42%) scaleY(0.18) rotate(-5deg); opacity: 0; }
-      55% { transform: translateY(-6%) scaleY(1.06) rotate(2deg); opacity: 1; }
-      100% { transform: translateY(0) scaleY(1) rotate(0deg); opacity: 1; }
-    }
-
-    /* Problem - two cards */
-    .problem-cards {
-      display: grid;
-      gap: 1.25rem;
-      margin-top: 1.5rem;
-    }
-
-    .problem-card {
-      padding: 1.5rem;
-      background: var(--surface-elevated);
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
-    }
-
-    .problem-card h3 { color: var(--sunrise); }
-
-    /* Solution - worm game */
-    .solution-highlight {
-      background: var(--dirt);
-      color: var(--worm);
-      padding: 0.2em 0.5em;
-      border-radius: 4px;
-      font-weight: 600;
-    }
-
-    .trap-note {
-      color: var(--danger);
-      font-weight: 500;
-    }
-
-    .cards {
-      display: grid;
-      gap: 1.25rem;
-      margin-top: 1.5rem;
-    }
-
-    .card {
-      padding: 1.5rem;
-      background: var(--surface-elevated);
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
-    }
-
-    .card h3 { color: var(--worm); }
-
-    .solution .cards,
-    .stakes .wrap,
-    .rewards .wrap {
+    .hero-art {
       position: relative;
-      z-index: 1;
+      padding: 1rem 0;
     }
 
-    /* Chicken Farm grid */
-    .chicken-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 1rem;
-      margin-top: 1.5rem;
-    }
-
-    .chicken-tier {
+    .hero-panel {
+      position: relative;
+      background:
+        linear-gradient(180deg, rgba(255, 203, 60, 0.18) 0%, rgba(255, 140, 47, 0.06) 20%, rgba(29, 13, 8, 0.9) 100%),
+        var(--surface);
+      border: 3px solid var(--line);
+      border-radius: 34px;
+      box-shadow: var(--shadow);
       padding: 1.25rem;
-      background: var(--surface-elevated);
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
+    }
+
+    .alarm-card {
+      background: rgba(22, 10, 7, 0.9);
+      border: 2px solid rgba(255, 248, 230, 0.08);
+      border-radius: 24px;
+      padding: 1rem;
+    }
+
+    .alarm-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .alarm-label {
+      font-size: 0.92rem;
+      color: var(--yellow);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .alarm-time {
+      font-size: clamp(2.6rem, 6vw, 4rem);
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .alarm-status {
+      padding: 0.4rem 0.65rem;
+      border-radius: 999px;
+      background: rgba(182, 59, 36, 0.22);
+      color: #ffb09f;
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .hero-scene {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.9rem;
+      align-items: end;
+    }
+
+    .scene-tile {
+      background: linear-gradient(180deg, rgba(255, 203, 60, 0.12), rgba(255, 203, 60, 0.03));
+      border: 2px solid rgba(255, 248, 230, 0.08);
+      border-radius: 22px;
+      padding: 0.9rem;
+      min-height: 210px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 0.9rem;
+    }
+
+    .scene-tile img {
+      width: min(190px, 100%);
+      margin: 0 auto;
+      filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.32));
+    }
+
+    .scene-note {
+      font-size: 0.92rem;
+      font-weight: 800;
+      color: var(--text);
       text-align: center;
     }
 
-    .chicken-tier .tier-name {
-      font-family: var(--font-head);
-      font-weight: 700;
-      font-size: 1.1rem;
-      color: var(--worm);
+    .scene-note strong {
+      display: block;
+      color: var(--yellow);
+      font-size: 1rem;
       margin-bottom: 0.25rem;
     }
 
-    .chicken-tier .tier-desc {
-      font-size: 0.875rem;
-      color: var(--text-muted);
-      margin: 0;
+    .worm-float {
+      position: absolute;
+      pointer-events: none;
+      filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.35));
+      animation: bob 4.2s ease-in-out infinite;
     }
 
-    /* Stakes / Graveyard */
-    .stakes-list { margin: 0; padding-left: 1.25rem; color: var(--text-muted); font-size: 0.9375rem; }
-    .stakes-list li { margin-bottom: 0.5rem; }
-    .stakes-list .danger-text { color: var(--danger); }
-    .graveyard-art {
-      margin-top: 1rem;
-      width: 110px;
-      opacity: 0.95;
-      filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.35));
+    .worm-a {
+      width: 118px;
+      left: -16px;
+      top: 40px;
+      transform: rotate(-8deg);
     }
 
-    /* Rewards - 3-Day Egg */
-    .egg-block {
-      padding: 1.5rem;
-      background: linear-gradient(135deg, rgba(255,215,0,0.12) 0%, rgba(255,127,80,0.08) 100%);
-      border: 1px solid rgba(255, 215, 0, 0.25);
-      border-radius: var(--radius);
-      margin-top: 1rem;
+    .worm-b {
+      width: 98px;
+      right: 10px;
+      bottom: 34px;
+      animation-delay: 1.4s;
+      transform: rotate(10deg);
     }
 
-    .egg-block p { margin: 0; color: var(--text-muted); }
-
-    /* Leaderboard mock */
-    .leaderboard-mock {
-      margin-top: 1.5rem;
-      padding: 1.25rem;
-      background: var(--surface-elevated);
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
+    @keyframes bob {
+      0%, 100% { transform: translateY(0) rotate(-4deg); }
+      50% { transform: translateY(-10px) rotate(4deg); }
     }
 
-    .leaderboard-mock h3 { margin-bottom: 0.75rem; font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
-    .leaderboard-rows { display: flex; flex-direction: column; gap: 0.5rem; }
-    .leaderboard-row {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.5rem 0;
-      border-bottom: 1px solid var(--border);
-      font-size: 0.9rem;
-    }
-    .leaderboard-row:last-child { border-bottom: none; }
-    .leaderboard-rank { color: var(--worm); font-weight: 700; min-width: 1.5rem; }
-    .leaderboard-name { color: var(--text); }
-    .leaderboard-days { color: var(--text-muted); margin-left: auto; }
-
-    /* Testimonials */
-    .testimonials { display: grid; gap: 1rem; margin-top: 1.5rem; }
-    .testimonial {
-      padding: 1.25rem;
-      background: var(--surface-elevated);
-      border-radius: var(--radius);
-      border-left: 3px solid var(--sunrise);
-    }
-    .testimonial blockquote { margin: 0; font-style: italic; color: var(--text-muted); font-size: 0.9375rem; }
-    .testimonial cite { font-size: 0.8rem; color: var(--text-muted); font-style: normal; }
-
-    /* Newsletter */
-    .newsletter-box {
-      margin-top: 1.5rem;
-      padding: 1.5rem;
-      background: var(--surface-elevated);
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
+    section {
+      padding: 4.5rem 0;
+      position: relative;
     }
 
-    .newsletter-box p { margin-bottom: 1rem; }
-    .newsletter-form {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
+    .panel {
+      background: rgba(28, 13, 9, 0.84);
+      border: 2px solid var(--line);
+      border-radius: 32px;
+      padding: 1.6rem;
+      box-shadow: var(--shadow);
     }
-    .newsletter-form input[type="email"] {
-      flex: 1;
-      min-width: 200px;
-      padding: 0.65rem 1rem;
-      font-family: var(--font-body);
-      font-size: 1rem;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-tile);
-      background: var(--bg);
-      color: var(--text);
-    }
-    .newsletter-form input[type="email"]::placeholder { color: var(--text-muted); }
-    .newsletter-form button {
-      padding: 0.65rem 1.25rem;
-      font-family: var(--font-body);
-      font-size: 1rem;
-      font-weight: 600;
-      color: #121212;
-      background: var(--worm);
-      border: none;
-      border-radius: var(--radius-tile);
-      cursor: pointer;
-    }
-    .newsletter-form button:hover { opacity: 0.95; }
 
-    /* Tech badge */
-    .tech-badge {
+    h2 {
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      color: var(--yellow);
+      text-shadow: 3px 3px 0 var(--red);
+    }
+
+    .section-intro {
+      margin: 0.85rem 0 0;
+      max-width: 42rem;
+      font-size: 1.04rem;
+      line-height: 1.6;
+    }
+
+    .steps,
+    .reasons,
+    .proof-grid,
+    .footer-grid {
       display: grid;
       gap: 1rem;
       margin-top: 1.5rem;
     }
 
-    .tech-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.75rem;
-      padding: 1rem;
-      background: var(--surface-elevated);
+    .steps { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .reasons { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .proof-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+    .card,
+    .proof-card {
+      background: linear-gradient(180deg, rgba(255, 248, 230, 0.04), rgba(255, 248, 230, 0.02));
+      border: 2px solid rgba(255, 248, 230, 0.08);
       border-radius: var(--radius);
-      border: 1px solid var(--border);
+      padding: 1.15rem;
     }
 
-    .tech-item strong { color: var(--worm); }
-    .tech-item p { margin: 0; font-size: 0.9rem; }
-
-    /* Footer */
-    footer {
-      padding: 3rem 0;
-      text-align: center;
-      border-top: 1px solid var(--border);
+    .step-number {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(180deg, #ffd451 0%, #ff9c2f 100%);
+      color: #2a160d;
+      font-weight: 900;
+      margin-bottom: 0.85rem;
+      box-shadow: 0 10px 20px rgba(243, 169, 35, 0.22);
     }
 
-    footer .cta { margin-bottom: 1rem; }
-    .footer-meta { font-size: 0.875rem; color: var(--text-muted); }
-    .footer-meta a { color: var(--sunrise); text-decoration: none; }
-    .footer-meta a:hover { text-decoration: underline; }
-    .tagline { font-family: var(--font-head); font-weight: 600; color: var(--text); margin-top: 1rem; }
+    h3 {
+      margin: 0;
+      font-size: 1.18rem;
+      color: var(--text);
+    }
 
-    /* Video sections */
-    .video-section .wrap { max-width: 800px; }
-    .video-wrap {
-      position: relative;
-      width: 100%;
-      border-radius: var(--radius);
+    .card p,
+    .proof-card p {
+      margin: 0.55rem 0 0;
+      line-height: 1.55;
+      font-size: 0.98rem;
+    }
+
+    .reason-icon {
+      font-size: 1.8rem;
+      line-height: 1;
+      margin-bottom: 0.8rem;
+    }
+
+    .proof-card {
       overflow: hidden;
-      background: var(--surface-elevated);
-      border: 1px solid var(--border);
-      margin-top: 1rem;
+      padding: 0;
     }
-    .video-wrap video {
+
+    .proof-shot {
+      aspect-ratio: 4 / 5;
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(circle at top, rgba(255, 203, 60, 0.18), transparent 45%),
+        linear-gradient(180deg, #42261b 0%, #23140f 100%);
+      border-bottom: 2px solid rgba(255, 248, 230, 0.08);
+    }
+
+    .proof-shot img {
+      max-height: 100%;
+      width: auto;
+      filter: drop-shadow(0 12px 22px rgba(0, 0, 0, 0.35));
+    }
+
+    .proof-copy {
+      padding: 1rem;
+    }
+
+    .proof-kicker {
+      display: block;
+      margin-top: 0.2rem;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 800;
+    }
+
+    .video-panel {
+      margin-top: 1.5rem;
+      overflow: hidden;
+      border-radius: 28px;
+      border: 2px solid var(--line);
+      box-shadow: var(--shadow);
+      background: #140a07;
+    }
+
+    .video-panel video {
       display: block;
       width: 100%;
       height: auto;
     }
-    .video-placeholder {
-      aspect-ratio: 16 / 9;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      padding: 2rem;
-      text-align: center;
+
+    footer {
+      padding: 0 0 3rem;
     }
 
-    @media (max-width: 720px) {
-      .worm-cluster img { width: 280px; }
-      .worm-cluster.worm-gold img { width: 320px; }
-      .worm-cluster.worm-black img { width: 240px; }
-      .hero-static-row { gap: 0.6rem; margin-top: 1.2rem; }
-      .hero-static-row img { width: min(120px, 30vw); }
-      .hero-clock { animation-duration: 0.12s; }
+    .footer-panel {
+      background:
+        linear-gradient(180deg, rgba(255, 203, 60, 0.12), rgba(255, 140, 47, 0.06) 28%, rgba(28, 13, 9, 0.92) 100%);
+    }
 
-      /* Keep hero worms near chickens, not over text */
-      header .worm-cluster.worm-gold { top: auto !important; bottom: 5% !important; left: -12% !important; }
-      header .worm-cluster.worm-pink { top: auto !important; bottom: 11% !important; right: -14% !important; }
-      header .worm-cluster.worm-black { top: auto !important; bottom: 2% !important; right: 24% !important; }
+    .footer-grid {
+      grid-template-columns: 1.1fr auto;
+      align-items: center;
+    }
 
-      header .worm-cluster.worm-gold img { width: 170px; }
-      header .worm-cluster.worm-pink img { width: 145px; }
-      header .worm-cluster.worm-black img { width: 130px; }
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.9rem;
+      margin-top: 1rem;
+    }
+
+    .footer-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 800;
+    }
+
+    .footer-links a:hover,
+    .footer-links a:focus-visible {
+      color: var(--yellow);
+    }
+
+    .footer-note {
+      margin-top: 0.8rem;
+      line-height: 1.55;
+      max-width: 36rem;
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid,
+      .steps,
+      .reasons,
+      .proof-grid,
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-grid {
+        min-height: auto;
+        padding-top: 1.5rem;
+      }
+
+      .hero-art {
+        order: -1;
+      }
+    }
+
+    @media (max-width: 640px) {
+      body { background-size: auto, auto, auto; }
+      .wrap,
+      .wrap-wide { width: min(100% - 1rem, 1120px); }
+      .panel,
+      .hero-panel { padding: 1.1rem; }
+      .alarm-top,
+      .hero-actions {
+        align-items: flex-start;
+      }
+      .alarm-top { flex-direction: column; }
+      .hero-scene { grid-template-columns: 1fr; }
+      .scene-tile { min-height: 180px; }
+      h1 { text-shadow: 3px 3px 0 var(--red); }
+      h2 { text-shadow: 2px 2px 0 var(--red); }
+      .worm-a { width: 82px; left: -8px; top: 24px; }
+      .worm-b { width: 72px; right: 0; bottom: 18px; }
     }
   </style>
 </head>
 <body>
-  <header>
-    <div class="worm-cluster worm-gold" style="top: 12%; left: 7%;">
-      <img src="Goldworm.png" alt="" aria-hidden="true">
+  <header class="hero">
+    <div class="topbar wrap-wide">
+      <a class="brand" href="/">
+        <img src="mascoticon.png" alt="CluckClock mascot icon">
+        <span>CluckClock</span>
+      </a>
     </div>
-    <div class="worm-cluster worm-pink" style="top: 22%; right: 9%;">
-      <img src="Pinkworm.png" alt="" aria-hidden="true">
-    </div>
-    <div class="worm-cluster worm-black" style="bottom: 8%; right: 14%;">
-      <img src="Blackworm.png" alt="" aria-hidden="true">
-    </div>
-    <div class="wrap">
-      <p class="logo">CluckClock</p>
-      <h1>Wake Up or the Chicken Dies.</h1>
-      <p class="hero-sub">The most emotionally motivating loud alarm clock for heavy sleepers and ADHD brains.</p>
-      <div class="hero-cta-row">
-        <a class="cta" href="[APP_STORE_LINK]">Download on the App Store →</a>
+
+    <div class="wrap-wide hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow">Loud alarm clock for heavy sleepers</span>
+        <h1>You snooze, you lose.</h1>
+        <p>Feed the chicken to stop the alarm. Snooze too much or fail too often, and your bird gets worse. CluckClock turns your morning into something you actually have to deal with.</p>
+        <div class="hero-actions">
+          <a class="cta" href="[APP_STORE_LINK]">Download on the App Store</a>
+          <a class="cta secondary" href="#how-it-works">See how it works</a>
+        </div>
+        <p class="cta-note">Weekday and weekend chickens. Loud wakeups. Real consequences.</p>
       </div>
-      <div class="hero-static-row" aria-hidden="true">
-        <img class="hero-base" src="Base.png" alt="">
-        <span class="hero-clock">⏰</span>
-        <img class="hero-dead" src="Dead.png" alt="">
+
+      <div class="hero-art" aria-hidden="true">
+        <img class="worm-float worm-a" src="Goldworm.png" alt="">
+        <img class="worm-float worm-b" src="Pinkworm.png" alt="">
+        <div class="hero-panel">
+          <div class="alarm-card">
+            <div class="alarm-top">
+              <div>
+                <div class="alarm-label">Alarm ringing</div>
+                <div class="alarm-time">6:30</div>
+              </div>
+              <div class="alarm-status">Chicken at risk</div>
+            </div>
+            <div class="hero-scene">
+              <div class="scene-tile">
+                <img src="Base.png" alt="">
+                <div class="scene-note">
+                  <strong>Feed to stop it</strong>
+                  Turn the alarm off by taking care of your chicken.
+                </div>
+              </div>
+              <div class="scene-tile">
+                <img src="Dead.png" alt="">
+                <div class="scene-note">
+                  <strong>Miss too often</strong>
+                  Snoozing and failing have consequences.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </header>
 
-  <section id="app-video" class="video-section" aria-labelledby="app-video-heading">
-    <div class="wrap">
-      <h2 id="app-video-heading">See it in action</h2>
-      <p class="section-intro">Watch the app in use—alarm, worm game, and coop.</p>
-      <div class="video-wrap">
-        <!-- Replace the placeholder below with your actual app demo video, e.g. <video controls playsinline poster="..."><source src="YourAppDemo.mp4" type="video/mp4"></video> -->
-        <div class="video-placeholder">Your app demo video goes here</div>
-      </div>
-    </div>
-  </section>
-
-  <section id="problem" aria-labelledby="problem-heading">
-    <div class="wrap">
-      <h2 id="problem-heading">Why You Struggle to Wake Up</h2>
-      <p class="section-intro">It’s not laziness. The science explains why standard alarms fail—and why CluckClock is built for the way your brain actually works.</p>
-      <div class="problem-cards">
-        <div class="problem-card">
-          <h3>Sleep inertia</h3>
-          <p>The grogginess you feel when the alarm goes off is a real transitional state. Your brain is still shifting from sleep to wake—and cognitive performance is temporarily lower. Hitting snooze or solving a simple math problem doesn’t require enough engagement to truly clear that fog.</p>
-        </div>
-        <div class="problem-card">
-          <h3>ADHD & time blindness</h3>
-          <p>If you have ADHD, “time blindness” and executive dysfunction make it easy to ignore or dismiss alarms. Standard alarms don’t create enough emotional stakes or immediate, tangible consequences—so your brain doesn’t prioritize getting up.</p>
+  <main>
+    <section id="how-it-works">
+      <div class="wrap panel">
+        <h2>How it works</h2>
+        <p class="section-intro">CluckClock keeps the morning loop simple. Set the alarm, feed the chicken, and don&apos;t let repeated snoozing wreck your bird.</p>
+        <div class="steps">
+          <article class="card">
+            <div class="step-number">1</div>
+            <h3>Set your alarm</h3>
+            <p>Use separate chickens for your weekday and weekend routine, so your real schedule stays intact.</p>
+          </article>
+          <article class="card">
+            <div class="step-number">2</div>
+            <h3>Feed the chicken to stop it</h3>
+            <p>When the alarm fires, you need to interact with the worm-feeding game to shut the noise off.</p>
+          </article>
+          <article class="card">
+            <div class="step-number">3</div>
+            <h3>Snooze too much and it gets worse</h3>
+            <p>Miss, skip, or stack up bad mornings and your chicken declines. The stakes are the point.</p>
+          </article>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="solution" class="solution" aria-labelledby="solution-heading">
-    <div class="worm-cluster worm-gold" style="top: 16%; right: 7%;">
-      <img src="Goldworm.png" alt="" aria-hidden="true">
-    </div>
-    <div class="worm-cluster worm-pink" style="bottom: 12%; left: 10%;">
-      <img src="Pinkworm.png" alt="" aria-hidden="true">
-    </div>
-    <div class="wrap">
-      <h2 id="solution-heading">The Worm Mini-Game That Actually Wakes You</h2>
-      <p class="section-intro">A short, focused mission that forces your eyes and hands to engage—without burning you out before you’ve had coffee.</p>
-      <div class="cards">
-        <div class="card">
-          <h3>4–6 second reaction mission</h3>
-          <p>Tap the three worm plots in a 2×2 grid. Unlike competitors that demand math or squats, this is a <span class="solution-highlight">tiny pet-care game</span> that clears your head in seconds. Enough to break sleep inertia; not so much that you give up.</p>
-        </div>
-        <div class="card">
-          <h3>Fake Worm traps</h3>
-          <p><span class="trap-note">Tap a fake worm and you lose.</span> The trap mechanic forces real visual focus and coordination—so you have to be truly awake before the sound stops. No half-asleep tap-and-dismiss.</p>
+    <section id="why-it-works">
+      <div class="wrap panel">
+        <h2>Why it works</h2>
+        <p class="section-intro">This is not a soft wellness alarm. It gives you a quick wake-up task, a reason not to snooze, and separate birds for the parts of your week that behave differently.</p>
+        <div class="reasons">
+          <article class="card">
+            <div class="reason-icon">!</div>
+            <h3>Real consequence beats mindless snoozing</h3>
+            <p>Your alarm now has a cost. That makes it harder to roll over and forget about it.</p>
+          </article>
+          <article class="card">
+            <div class="reason-icon">3</div>
+            <h3>Quick interaction gets you engaged fast</h3>
+            <p>The worm game is short, direct, and active enough to pull you out of that half-awake autopilot.</p>
+          </article>
+          <article class="card">
+            <div class="reason-icon">2</div>
+            <h3>Weekday and weekend support real routines</h3>
+            <p>Different chickens for different schedules means the app fits how mornings actually work.</p>
+          </article>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="why-it-works" class="video-section" aria-labelledby="why-video-heading">
-    <div class="wrap">
-      <h2 id="why-video-heading">Why the app works</h2>
-      <p class="section-intro">The science and design behind CluckClock—why it gets you out of bed when other alarms don’t.</p>
-      <div class="video-wrap">
-        <video controls playsinline preload="metadata" poster="">
-          <source src="CluckClockPromoVid.mp4" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
-      </div>
-    </div>
-  </section>
-
-  <section id="chicken-farm" aria-labelledby="chicken-heading">
-    <div class="wrap">
-      <h2 id="chicken-heading">The Chicken Farm</h2>
-      <p class="section-intro">Different chickens guard different parts of your week—and your biggest milestones.</p>
-      <div class="chicken-grid">
-        <div class="chicken-tier">
-          <div class="tier-name">Base Chicken</div>
-          <p class="tier-desc">Your daily weekday guardian. Mon–Fri.</p>
+    <section id="proof">
+      <div class="wrap">
+        <h2>Proof, not filler</h2>
+        <p class="section-intro">The app story is simple: loud alarm, worm-game interaction, visible stakes, and a chicken you do not want to lose.</p>
+        <div class="proof-grid">
+          <article class="proof-card">
+            <div class="proof-shot">
+              <img src="walk.png" alt="Walking CluckClock chicken">
+            </div>
+            <div class="proof-copy">
+              <h3>You snooze, you lose</h3>
+              <p>The whole app is built around getting you moving instead of dismissing another generic alarm.</p>
+            </div>
+          </article>
+          <article class="proof-card">
+            <div class="proof-shot">
+              <img src="Base.png" alt="Healthy CluckClock chicken">
+            </div>
+            <div class="proof-copy">
+              <h3>Feed to turn it off</h3>
+              <p>Stopping the alarm means taking care of the bird, not just tapping a sleepy button.</p>
+            </div>
+          </article>
+          <article class="proof-card">
+            <div class="proof-shot">
+              <img src="PeckChicken.png" alt="Chicken pecking for worms">
+            </div>
+            <div class="proof-copy">
+              <h3>Worm-game wake-up</h3>
+              <p>The interaction is playful, but it still forces your eyes and hands to do something real.</p>
+            </div>
+          </article>
+          <article class="proof-card">
+            <div class="proof-shot">
+              <img src="Dead.png" alt="Dead chicken showing consequences">
+            </div>
+            <div class="proof-copy">
+              <h3>Miss too often and it dies</h3>
+              <p>The graveyard stakes are what make CluckClock feel different from a normal alarm app.</p>
+              <span class="proof-kicker">Consequences stay visible</span>
+            </div>
+          </article>
         </div>
-        <div class="chicken-tier">
-          <div class="tier-name">Weekend Rooster</div>
-          <p class="tier-desc">Protects your Saturday and Sunday streaks.</p>
-        </div>
-        <div class="chicken-tier">
-          <div class="tier-name">Monthly Sentinel</div>
-          <p class="tier-desc">The ultimate test of 30-day discipline.</p>
-        </div>
-        <div class="chicken-tier">
-          <div class="tier-name">Yearly Phoenix</div>
-          <p class="tier-desc">Your biggest milestone—a year of mornings.</p>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <section id="stakes" class="stakes" aria-labelledby="stakes-heading">
-    <div class="worm-cluster worm-black" style="top: 18%; right: 8%;">
-      <img src="Blackworm.png" alt="" aria-hidden="true">
-    </div>
-    <div class="wrap">
-      <h2 id="stakes-heading">Permanent Stakes & The Graveyard</h2>
-      <p class="section-intro">When your chicken dies, it stays dead. That’s the point.</p>
-      <ul class="stakes-list">
-        <li><strong class="danger-text">Permanent death</strong> — Dead chickens don’t come back. You start a new chicken with a new personality and name.</li>
-        <li><strong>The Graveyard</strong> — A visual record of every chicken you’ve lost (and how long they lived). A feature no other alarm app offers: your wake-up history, honest and permanent.</li>
-      </ul>
-      <img class="graveyard-art" src="Dead.png" alt="Dead chicken icon">
-    </div>
-  </section>
-
-  <section id="rewards" class="rewards" aria-labelledby="rewards-heading">
-    <div class="worm-cluster worm-gold" style="top: 22%; left: 7%;">
-      <img src="Goldworm.png" alt="" aria-hidden="true">
-    </div>
-    <div class="wrap">
-      <h2 id="rewards-heading">Consistency Rewards: The 3-Day Egg</h2>
-      <p class="section-intro">Stay consistent; get rewarded. A healthy chicken lays an egg every 3 days.</p>
-      <div class="egg-block">
-        <p><strong style="color: var(--worm);">Play-to-earn mornings.</strong> Feed your chicken three worms, day after day, and it stays healthy. Every 3 days it lays an egg—unlocking progress toward new chicken tiers (Monthly Sentinel, Yearly Phoenix) and giving you a tangible reward for showing up.</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="leaderboard" aria-labelledby="leaderboard-heading">
-    <div class="wrap">
-      <h2 id="leaderboard-heading">Longest Surviving Chicken</h2>
-      <p class="section-intro">See how you stack up. (Coming soon: live leaderboard.)</p>
-      <div class="leaderboard-mock">
-        <h3>Leaderboard sneak peek</h3>
-        <div class="leaderboard-rows">
-          <div class="leaderboard-row"><span class="leaderboard-rank">1</span><span class="leaderboard-name">EarlyBird_42</span><span class="leaderboard-days">127 days</span></div>
-          <div class="leaderboard-row"><span class="leaderboard-rank">2</span><span class="leaderboard-name">RoosterRex</span><span class="leaderboard-days">98 days</span></div>
-          <div class="leaderboard-row"><span class="leaderboard-rank">3</span><span class="leaderboard-name">CluckMaster</span><span class="leaderboard-days">76 days</span></div>
+        <div class="video-panel">
+          <video controls playsinline preload="metadata">
+            <source src="CluckClockPromoVid.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
-  <section id="social-proof" aria-labelledby="testimonials-heading">
-    <div class="wrap">
-      <h2 id="testimonials-heading">Shared Streaks</h2>
-      <p class="section-intro">People are keeping their chickens alive—and their mornings on track.</p>
-      <div class="testimonials">
-        <div class="testimonial">
-          <blockquote>“First alarm app I haven’t turned off in my sleep. 30+ days, same chicken. The worm game is stupid in the best way.”</blockquote>
-          <cite>— 30+ day streak</cite>
+  <footer>
+    <div class="wrap panel footer-panel">
+      <div class="footer-grid">
+        <div>
+          <h2>Download CluckClock</h2>
+          <p class="footer-note">A loud alarm clock with real consequences. Feed the chicken to stop the alarm, keep your weekday and weekend routines separate, and try not to lose your bird.</p>
+          <div class="footer-links">
+            <a href="/privacy">Privacy Policy</a>
+            <a href="/terms">Terms of Service</a>
+            <a href="/contact">Contact Support</a>
+          </div>
         </div>
-        <div class="testimonial">
-          <blockquote>“ADHD brain here. The stakes actually work. I don’t want to kill my chicken.”</blockquote>
-          <cite>— Shared streak</cite>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="newsletter" aria-labelledby="newsletter-heading">
-    <div class="wrap">
-      <h2 id="newsletter-heading">Insider Tips & Habit Building</h2>
-      <p class="section-intro">Get recommendations and habit-building tips in your inbox. No spam—just stuff that helps you wake up.</p>
-      <div class="newsletter-box">
-        <p>Sign up for early access, product updates, and morning-routine tips.</p>
-        <form class="newsletter-form" action="#" method="post" aria-label="Newsletter signup">
-          <input type="email" name="email" placeholder="you@example.com" required aria-label="Email address">
-          <button type="submit">Sign up</button>
-        </form>
-      </div>
-    </div>
-  </section>
-
-  <section id="tech" aria-labelledby="tech-heading">
-    <div class="wrap">
-      <h2 id="tech-heading">Built to Ring On Time</h2>
-      <p class="section-intro">No “bad programming.” We built CluckClock so the chicken always crows when it should—and your phone doesn’t pay the price.</p>
-      <div class="tech-badge">
-        <div class="tech-item">
-          <strong>Reliable performance</strong>
-          <p>iOS Time-Sensitive Notifications and Swift/SwiftUI ensure the alarm fires at the set time, even when the app is in the background. The chicken crows. Every time.</p>
-        </div>
-        <div class="tech-item">
-          <strong>Battery efficient</strong>
-          <p>Designed to avoid the 0% battery drain of background-heavy sleep trackers. We don’t run constant monitoring—just alarms and timers that respect your device.</p>
+        <div>
+          <a class="cta" href="[APP_STORE_LINK]">Download on the App Store</a>
         </div>
       </div>
-    </div>
-  </section>
-
-  <footer id="app-store">
-    <div class="wrap">
-      <a class="cta" href="[APP_STORE_LINK]">Download on the App Store →</a>
-      <p class="footer-meta">
-        <a href="/privacy">Privacy Policy</a>
-        <span aria-hidden="true"> · </span>
-        <a href="/terms">Terms of Service</a>
-        <span aria-hidden="true"> · </span>
-        <a href="/contact">Contact Support</a>
-      </p>
-      <p class="tagline">CluckClock — Wake up or the chicken dies.</p>
     </div>
   </footer>
-  <script>
-    (function () {
-      var worms = document.querySelectorAll('.worm-cluster');
-      if (!worms.length || !('IntersectionObserver' in window)) return;
-
-      var observer = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-active');
-          } else {
-            entry.target.classList.remove('is-active');
-          }
-        });
-      }, {
-        threshold: 0.15,
-        rootMargin: '-8% 0px -8% 0px'
-      });
-
-      worms.forEach(function (worm) {
-        observer.observe(worm);
-      });
-    })();
-  </script>
 </body>
 </html>
