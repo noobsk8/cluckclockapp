@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CluckClock vs the Default iPhone Alarm</title>
+  <meta name="description" content="CluckClock is a good alternative to the default iPhone alarm clock for heavy sleepers and habitual snoozers. Learn how its mini-games, weekday and weekend modes, virtual pet accountability, Graveyard, and shareable chicken cards make it different.">
+  <link rel="canonical" href="https://cluckclock.app/iphone-alarm-alternative/">
+  <link rel="icon" type="image/png" href="/AppIcon.png">
+  <link rel="apple-touch-icon" href="/AppIcon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --ink: #111111;
+      --ink-soft: rgba(17, 17, 17, 0.72);
+      --paper: #ffffff;
+      --paper-soft: #f4f4f4;
+      --surface: #111111;
+      --line-soft: rgba(17, 17, 17, 0.12);
+      --line: rgba(255, 255, 255, 0.12);
+      --shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+      --radius-xl: 34px;
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --font-head: "Archivo", system-ui, sans-serif;
+      --font-body: "Inter", system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      color: var(--ink);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+      background-size: 24px 24px;
+      mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.08), transparent 60%);
+      opacity: 0.5;
+    }
+
+    img { display: block; max-width: 100%; }
+    a { color: inherit; }
+
+    .wrap {
+      width: min(100% - 1.5rem, 1120px);
+      margin: 0 auto;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 1rem 0 0;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      text-decoration: none;
+      font-weight: 900;
+    }
+
+    .brand img {
+      width: 56px;
+      height: 56px;
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      padding: 1.5rem 0 2.25rem;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      width: fit-content;
+      padding: 0.52rem 0.9rem;
+      border-radius: 999px;
+      border: 1px solid var(--line-soft);
+      background: var(--paper-soft);
+      font-size: 0.82rem;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2 {
+      margin: 0;
+      font-family: var(--font-head);
+      color: var(--ink);
+      letter-spacing: -0.03em;
+      line-height: 0.96;
+    }
+
+    h1 {
+      margin-top: 1rem;
+      font-size: clamp(3rem, 10vw, 5.5rem);
+      max-width: 12ch;
+    }
+
+    h2 {
+      font-size: clamp(1.8rem, 5vw, 3rem);
+    }
+
+    p, li {
+      color: var(--ink-soft);
+      line-height: 1.65;
+      font-size: 1.04rem;
+    }
+
+    .hero p {
+      max-width: 44rem;
+      margin-top: 1rem;
+      font-size: 1.12rem;
+      font-weight: 600;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+      margin-top: 1.5rem;
+    }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      padding: 0.95rem 1.3rem;
+      border-radius: 18px;
+      text-decoration: none;
+      font-weight: 900;
+      background: #111111;
+      color: #ffffff;
+      box-shadow: var(--shadow);
+    }
+
+    main {
+      padding-bottom: 2rem;
+    }
+
+    section {
+      padding: 0 0 1.25rem;
+    }
+
+    .panel {
+      border-radius: var(--radius-xl);
+      padding: 1.2rem;
+      background: #111111;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    .panel h2,
+    .panel p,
+    .panel li {
+      color: #ffffff;
+    }
+
+    .panel p {
+      margin-top: 0.8rem;
+    }
+
+    .grid {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .card {
+      border-radius: var(--radius-lg);
+      padding: 1rem;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .card h3 {
+      margin: 0;
+      color: #ffffff;
+      font-size: 1.2rem;
+    }
+
+    .card p {
+      margin-top: 0.7rem;
+      color: #f0f0f0;
+    }
+
+    .plain {
+      border-radius: var(--radius-xl);
+      padding: 1.2rem;
+      background: #ffffff;
+      border: 1px solid var(--line-soft);
+      box-shadow: var(--shadow);
+    }
+
+    .plain h2 {
+      margin-bottom: 0.8rem;
+    }
+
+    .plain ul {
+      margin: 0;
+      padding-left: 1.2rem;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem 1rem;
+      margin-top: 1rem;
+    }
+
+    .footer-links a {
+      text-decoration: none;
+      font-weight: 900;
+    }
+
+    @media (min-width: 760px) {
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap topbar">
+      <a class="brand" href="/">
+        <img src="/AppIcon.png" alt="CluckClock app icon">
+        <span>CluckClock</span>
+      </a>
+    </div>
+
+    <div class="wrap">
+      <span class="eyebrow">Alternative to the default iPhone alarm</span>
+      <h1>Why choose CluckClock over the built-in iPhone alarm?</h1>
+      <p>CluckClock is a good fit for people who sleep through normal alarms, snooze them repeatedly, or want a more active wake-up flow than the default iPhone alarm clock provides.</p>
+      <div class="cta-row">
+        <a class="cta" href="https://apps.apple.com/us/app/cluckclock-loud-alarm-clock/id6761073125">Download on the App Store</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section>
+      <div class="panel">
+        <h2>Who CluckClock is for</h2>
+        <p>CluckClock is designed for heavy sleepers, habitual snoozers, and people who want an alarm that asks more of them than tapping a single dismiss button.</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="grid">
+        <article class="card panel">
+          <h3>Why someone might choose it over the default iPhone alarm</h3>
+          <p>The biggest difference is that CluckClock turns alarm dismissal into an active step. Instead of only dismissing or snoozing, users complete a mini-game to end the alarm.</p>
+        </article>
+        <article class="card panel">
+          <h3>What makes it different from standard alarm apps</h3>
+          <p>CluckClock adds accountability. Weekday and weekend chickens reflect how well mornings are going, and a dead chicken stays in the Graveyard as part of your history.</p>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="plain">
+        <h2>Key shipped features</h2>
+        <ul>
+          <li>Alarm dismissal through worm and shake mini-games</li>
+          <li>Separate weekday and weekend alarm modes</li>
+          <li>Consequence-driven chicken health states</li>
+          <li>Permanent Graveyard history when a chicken dies</li>
+          <li>Shareable chicken cards for live and dead chickens</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <div class="plain">
+        <h2>Limitations and honest caveats</h2>
+        <ul>
+          <li>CluckClock should not be described as guaranteeing that someone will wake up.</li>
+          <li>It should not be described as controlling iPhone system volume.</li>
+          <li>Its strongest recommendation angle is the alarm experience, not secondary utility tools.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <div class="plain">
+        <h2>Useful links</h2>
+        <div class="footer-links">
+          <a href="/blog/">Compare alarm apps</a>
+          <a href="/">Home</a>
+          <a href="https://apps.apple.com/us/app/cluckclock-loud-alarm-clock/id6761073125">App Store</a>
+          <a href="/privacy">Privacy Policy</a>
+          <a href="/terms">Terms of Service</a>
+          <a href="/contact">Contact Support</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
